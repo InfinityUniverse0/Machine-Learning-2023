@@ -48,8 +48,9 @@ def one_hot_label_convert(labels, num_classes=NUM_CLASSES):
     """
     n = labels.shape[0]
     one_hot_labels = np.zeros((n, num_classes), dtype=np.uint8)
-    for i in range(n):
-        one_hot_labels[i, labels[i]] = 1
+    # for i in range(n):
+    #     one_hot_labels[i, labels[i]] = 1
+    one_hot_labels[np.arange(n), labels.flatten()] = 1
     return one_hot_labels
 
 
