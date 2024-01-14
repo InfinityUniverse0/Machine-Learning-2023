@@ -163,3 +163,13 @@ Ex01-Softmax_Regression/loss_plot.png
 Ex01-Softmax_Regression/accuracy_plot.png
 
 *.pdf
+
+# LaTeX files
+/LeNet-5/Document/
+# Test files
+/LeNet-5/MyTest*.py
+# Results
+/LeNet-5/*.pkl
+/LeNet-5/*.png
+# LeNet-5 using PyTorch
+/LeNet-5/lenet5_pytorch.py
