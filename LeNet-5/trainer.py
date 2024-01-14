@@ -115,7 +115,10 @@ class Trainer:
                 pickle.dump(self.train_acc_list, f)
             with open('test_acc_list.pkl', 'wb') as f:
                 pickle.dump(self.test_acc_list, f)
-            print('Dump Successfully!')
+            print('Dump Evaluation Results Successfully!')
+
+    def get_eval_results(self):
+        return self.train_loss_list, self.train_acc_list, self.test_acc_list
 
     def get_confusion_matrix(self):
         train_confusion_matrix = self.model.get_confusion_matrix(self.x_train, self.t_train)
@@ -124,3 +127,6 @@ class Trainer:
 
     def get_model_params(self):
         return self.model.get_params()
+
+    def load_model_params(self, params):
+        self.model.load_params(params)
