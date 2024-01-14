@@ -141,6 +141,26 @@ class Convolution:
 
         return dx
 
+    def get_params(self):
+        """
+        Get Parameters
+        :return params: dict
+        """
+        params = {'W': self.W}
+        if self.bias:
+            params['b'] = self.b
+        return params
+
+    def load_params(self, params):
+        """
+        Load Parameters
+        :param params: dict
+        :return:
+        """
+        self.W = params['W']
+        if self.bias:
+            self.b = params['b']
+
 
 class MaxPooling:
     """
@@ -277,6 +297,26 @@ class Linear:
 
         return dx
 
+    def get_params(self):
+        """
+        Get Parameters
+        :return params: dict
+        """
+        params = {'W': self.W}
+        if self.bias:
+            params['b'] = self.b
+        return params
+
+    def load_params(self, params):
+        """
+        Load Parameters
+        :param params: dict
+        :return:
+        """
+        self.W = params['W']
+        if self.bias:
+            self.b = params['b']
+
 
 class SoftmaxWithLoss:
     """
@@ -314,6 +354,18 @@ class SoftmaxWithLoss:
             dx[np.arange(batch_size), self.t.flatten()] -= 1
 
         return dx
+
+
+weighted_layers_list = (Convolution, Linear)  # Layers with weights
+
+
+def is_weighted_layer(layer):
+    """
+    Check if the layer has weights
+    :param layer:
+    :return:
+    """
+    return isinstance(layer, weighted_layers_list)
 
 
 if __name__ == '__main__':
