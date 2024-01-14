@@ -6,6 +6,7 @@ from optim import *
 from utils import dataset_shuffle
 from math import ceil
 import pickle
+import time
 
 
 class Trainer:
@@ -41,7 +42,7 @@ class Trainer:
         self.shuffle = shuffle
 
         optimizer_dict = {
-            'sgd': SGD,
+            'sgd': SGD, 'adam': Adam,
         }
         optimizer_params['model_layers'] = model.layers
         self.optimizer = optimizer_dict[optimizer.lower()](**optimizer_params)
@@ -61,6 +62,9 @@ class Trainer:
             x_train, t_train = self.x_train.copy(), self.t_train.copy()
 
         idx = -self.batch_size
+        # Time Start
+        epoch_start_time = time.time()
+        last_time = epoch_start_time
         for it in range(self.iter_per_epoch):
             idx += self.batch_size
             if it == self.iter_per_epoch - 1:
@@ -81,9 +85,12 @@ class Trainer:
             self.train_loss_list.append(loss)
 
             # log
-            print('Epoch: {} / {}  Iter: {} / {}  Train Loss: {}'.format(
-                cur_epoch, self.epoch, (it + 1), self.iter_per_epoch, loss
-            ))
+            if (it + 1) % 100 == 0:
+                print('Epoch: {} / {}  Iter: {} / {}  Train Loss: {}  Time: {}s'.format(
+                    cur_epoch, self.epoch, (it + 1), self.iter_per_epoch, loss,
+                    time.time() - last_time
+                ))
+                last_time = time.time()
 
         # Test
         train_acc = self.model.get_accuracy(self.x_train, self.t_train)
@@ -92,8 +99,9 @@ class Trainer:
         self.test_acc_list.append(test_acc)
 
         # log
-        print('Epoch: {} / {}  Train Acc: {}  Test Acc: {}'.format(
-            cur_epoch, self.epoch, train_acc, test_acc
+        print('Epoch: {} / {}  Train Acc: {}  Test Acc: {}  Epoch Time: {}s'.format(
+            cur_epoch, self.epoch, train_acc, test_acc,
+            time.time() - epoch_start_time
         ))
 
     def train(self, dump_eval: bool = True):
@@ -108,3 +116,11 @@ class Trainer:
             with open('test_acc_list.pkl', 'wb') as f:
                 pickle.dump(self.test_acc_list, f)
             print('Dump Successfully!')
+
+    def get_confusion_matrix(self):
+        train_confusion_matrix = self.model.get_confusion_matrix(self.x_train, self.t_train)
+        test_confusion_matrix = self.model.get_confusion_matrix(self.x_test, self.t_test)
+        return train_confusion_matrix, test_confusion_matrix
+
+    def get_model_params(self):
+        return self.model.get_params()
