@@ -204,7 +204,7 @@ class MaxPooling:
         # dout: [N*out_h*out_w*C]
         dout = dout.transpose(0, 2, 3, 1).reshape(-1)
 
-        dx = np.zeros(N*out_h*out_w*C, pool_h*pool_w)
+        dx = np.zeros((N*out_h*out_w*C, pool_h*pool_w))
         dx[np.arange(self.arg_max.size), self.arg_max.flatten()] = dout
 
         # dx: [N*out_h*out_w, C*pool_h*pool_w]
