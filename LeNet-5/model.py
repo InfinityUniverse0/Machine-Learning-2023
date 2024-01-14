@@ -4,6 +4,7 @@ LeNet-5 Model
 
 from layers import *
 from collections import OrderedDict
+from sklearn.metrics import confusion_matrix  # 混淆矩阵
 
 
 class LeNet5:
@@ -81,12 +82,12 @@ class LeNet5:
         self.loss(x, t)
         self.backward()
 
-    def get_accuracy(self, x, t):
+    def __get_y_and_t_1d(self, x, t):
         """
-        Get Accuracy
+        Get y and t in 1-D from x and t
         :param x: input
         :param t: labels
-        :return acc:
+        :return y, t:
         """
         y = self.predict(x)
         y = np.argmax(y, axis=1)
@@ -98,5 +99,46 @@ class LeNet5:
 
         assert y.ndim == 1 and t.ndim == 1
 
+        return y, t
+
+    def get_accuracy(self, x, t):
+        """
+        Get Accuracy
+        :param x: input
+        :param t: labels
+        :return acc:
+        """
+        y, t = self.__get_y_and_t_1d(x, t)
         acc = np.sum(y == t) / y.size
         return acc
+
+    def get_confusion_matrix(self, x, t):
+        """
+        Get Confusion Matrix
+        :param x: input
+        :param t: labels
+        :return:
+        """
+        y, t = self.__get_y_and_t_1d(x, t)
+        return confusion_matrix(t, y)
+
+    def get_params(self):
+        """
+        Get Parameters
+        :return params: dict
+        """
+        params = {}
+        for layer_name, layer in self.layers.items():
+            if is_weighted_layer(layer):
+                params[layer_name] = layer.get_params()
+        return params
+
+    def load_params(self, params):
+        """
+        Load Parameters
+        :param params: dict
+        :return:
+        """
+        for layer_name, layer in self.layers.items():
+            if is_weighted_layer(layer):
+                layer.load_params(params[layer_name])
