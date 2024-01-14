@@ -65,7 +65,7 @@ def display_img(images, idx):
     image.show()
 
 
-def load_mnist(normalize=False, one_hot_label=True):
+def load_mnist(normalize=True, one_hot_label=True):
     train_imgs = load_dataset(TRAIN_IMAGE_PATH, True)
     train_labels = load_dataset(TRAIN_LABEL_PATH, False)
     test_imgs = load_dataset(TEST_IMAGE_PATH, True)
