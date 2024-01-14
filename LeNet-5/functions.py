@@ -12,9 +12,9 @@ def relu(x):
 def softmax(x):
     """softmax实现时，为防止溢出，减去最大值"""
     if x.ndim == 2:  # [N, num_classes]
-        x_max = np.max(x, axis=1)  # x_max: [N]
+        x_max = np.max(x, axis=1, keepdims=True)  # x_max: [N, 1]
         y = np.exp(x - x_max)  # in case of overflow
-        y = y / np.sum(y, axis=1)
+        y = y / np.sum(y, axis=1, keepdims=True)
         return y
     else:  # [num_classes]
         x_max = np.max(x)
