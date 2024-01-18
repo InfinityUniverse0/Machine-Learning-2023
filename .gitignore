@@ -164,6 +164,9 @@ Ex01-Softmax_Regression/accuracy_plot.png
 
 *.pdf
 
+# LeNet-5 Document
+!/LeNet-5/LeNet-5实验报告.pdf
+
 # LaTeX files
 /LeNet-5/Document/
 # Test files
