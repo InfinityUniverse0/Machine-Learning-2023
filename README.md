@@ -1,5 +1,7 @@
 # Machine-Learning-2023
 
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 This repository contains the laboratory assignments for the Machine Learning course at Nankai University in 2023.
 
 南开大学2023年机器学习课程实验
